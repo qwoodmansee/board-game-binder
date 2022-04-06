@@ -18,4 +18,4 @@ ATLAS_CLIENT_ID=YOUR_ID_HERE
 
 you can generate an atlas client id at https://www.boardgameatlas.com/api/docs/apps
 
-4. run `npm run generate` to run the code and generate a png
+4. run `npm run generate` to run the code and generate a pdf
