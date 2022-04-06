@@ -1,4 +1,8 @@
 import "dotenv/config";
+import {
+  EXAMPLE_BGG_GAMES,
+  EXAMPLE_ATLAS_GAMES,
+} from "./mocks/example-games.js";
 import { parseInput } from "./input-utils/parse-input.js";
 import { getJsonGameInputData } from "./input-utils/parse-input.js";
 import { fetchBoardGamesFromAtlas } from "./network/atlas-integration.js";
@@ -17,6 +21,11 @@ const main = async () => {
     atlasGames
   );
 
+  // const games = createUsableGamesObject(
+  //   jsonGameInputData,
+  //   EXAMPLE_BGG_GAMES,
+  //   EXAMPLE_ATLAS_GAMES.games
+  // );
   await createOutputPdf(commandLineOptions, games);
 };
 
