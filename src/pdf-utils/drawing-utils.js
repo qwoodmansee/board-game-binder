@@ -76,7 +76,7 @@ export const createPageForGame = async (doc, game, pageNumber) => {
     currentStatY += 25;
   }
 
-  if (game.strategyComplexity) {
+  if (game.learningComplexity) {
     drawStatistic(
       doc,
       "images/learning.png",
@@ -92,13 +92,28 @@ export const createPageForGame = async (doc, game, pageNumber) => {
     drawTags(doc, game.tags);
   }
 
-  doc
-    .font("fonts/IBM_Plex_Serif/IBMPlexSerif-Regular.ttf")
-    .fontSize(9)
-    .text(game.description, 100, 300);
+  if (game.description) {
+    doc
+      .font("fonts/IBM_Plex_Serif/IBMPlexSerif-Bold.ttf")
+      .fontSize(10)
+      .text(`SYNOPSIS:`, 100, 300);
 
-  const qrCode = await QRCode.toBuffer(game.rulesUrl);
-  doc.image(qrCode);
+    doc
+      .font("fonts/IBM_Plex_Serif/IBMPlexSerif-Regular.ttf")
+      .fontSize(9)
+      .text(game.description, 100, 320);
+  }
+
+  if (game.rulesUrl) {
+    doc
+      .font("fonts/IBM_Plex_Serif/IBMPlexSerif-Bold.ttf")
+      .fontSize(10)
+      .moveDown()
+      .text(`LEARN THE RULES:`, { align: "left" });
+
+    const qrCode = await QRCode.toBuffer(game.rulesUrl);
+    doc.image(qrCode, { fit: [75, 75] });
+  }
 
   if (game.sarahsPick && game.quintonsPick) {
     doc.image("images/couples-pick.png", 400, 60, { fit: [75, 75] });
