@@ -25,7 +25,7 @@ export const drawTags = (doc, tags) => {
   });
 };
 
-export const createPageForGame = async (doc, game) => {
+export const createPageForGame = async (doc, game, pageNumber) => {
   doc.addPage();
   doc
     .font("fonts/IBM_Plex_Serif/IBMPlexSerif-Regular.ttf")
@@ -107,6 +107,42 @@ export const createPageForGame = async (doc, game) => {
   } else if (game.quintonsPick) {
     doc.image("images/quintons-pick.png", 400, 60, { fit: [75, 75] });
   }
+
+  drawPageNumber(doc, pageNumber);
+};
+
+const drawPageNumber = (doc, pageNumber) => {
+  doc
+    .font("fonts/hack/Hack-Bold.ttf")
+    .fontSize(10)
+    .text(`${pageNumber}`, 560, 730);
+};
+
+const createTableOfContents = async (doc, games) => {
+  doc.addPage();
+  doc
+    .font("fonts/hack/Hack-Bold.ttf")
+    .fontSize(25)
+    .lineGap(3)
+    .text("Table of Contents", { align: "center" });
+
+  const maxCharactersPerLine = 60;
+  let currentPageNumber = 2;
+  for (const game of games) {
+    const gameNameLength = game.name.length;
+    const numberOfDots = maxCharactersPerLine - gameNameLength;
+    doc
+      .font("fonts/hack/Hack-Regular.ttf")
+      .fontSize(10)
+      .text(`${game.name}${".".repeat(numberOfDots)}${currentPageNumber}`, {
+        align: "center",
+      })
+      .lineGap(3);
+
+    currentPageNumber += 1;
+  }
+
+  drawPageNumber(doc, 1);
 };
 
 export const createOutputPdf = async (commandLineOptions, games) => {
@@ -118,8 +154,12 @@ export const createOutputPdf = async (commandLineOptions, games) => {
     .fontSize(25)
     .text(`Quinton & Sarah's Big Book of Board Games`, 100, 100);
 
+  createTableOfContents(doc, games);
+
+  let pageNumber = 2;
   for (const game of games) {
-    await createPageForGame(doc, game);
+    await createPageForGame(doc, game, pageNumber);
+    pageNumber += 1;
   }
 
   // await createPageForGame(doc, games[0]);

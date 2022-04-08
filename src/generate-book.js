@@ -21,12 +21,8 @@ const main = async () => {
     atlasGames
   );
 
-  // const games = createUsableGamesObject(
-  //   jsonGameInputData,
-  //   EXAMPLE_BGG_GAMES,
-  //   EXAMPLE_ATLAS_GAMES.games
-  // );
-  await createOutputPdf(commandLineOptions, games);
+  const orderedGames = games.sort((a, b) => a.name.localeCompare(b.name));
+  await createOutputPdf(commandLineOptions, orderedGames);
 };
 
 main();
